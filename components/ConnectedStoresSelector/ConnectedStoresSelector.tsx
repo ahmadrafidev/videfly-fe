@@ -1,21 +1,48 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import {
   Select,
   SelectContent,
-  SelectItem,
   SelectTrigger,
-  SelectValue,
 } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
-import { useConnectedStores } from "../../store/useConnectedStores.ts"
+import { Checkbox } from "@/components/ui/checkbox"
+import { useConnectedStores } from "@/store/useConnectedStores"
+import { toast } from "sonner"
+
+const ALL_MARKETPLACES = [
+  "Tokopedia",
+  "Shopee",
+  "Lazada",
+  "TiktokShop",
+  "Blibli",
+]
 
 export function ConnectedStoresSelector() {
-  const { connectedStores } = useConnectedStores()
+  const { connectedStores, connectStore } = useConnectedStores()
+  const [selected, setSelected] = useState<string[]>([])
+
+  useEffect(() => {
+    setSelected(connectedStores)
+  }, [connectedStores])
+
+  const toggleMarketplace = (name: string) => {
+    setSelected((prev) =>
+      prev.includes(name) ? prev.filter((s) => s !== name) : [...prev, name]
+    )
+  }
+
+  const handleConnect = () => {
+    selected.forEach(connectStore)
+    toast.success("Toko yang berhasil terhubung", {
+      description: selected.join(", "),
+    })
+  }
 
   return (
     <Select>
-      <SelectTrigger className="w-full justify-between bg-muted text-foreground">
+      <SelectTrigger className="w-full justify-between bg-white text-foreground">
         <div className="flex items-center gap-2">
           <span className="text-sm">Toko Terhubung</span>
           {connectedStores.length > 0 && (
@@ -26,18 +53,26 @@ export function ConnectedStoresSelector() {
         </div>
       </SelectTrigger>
       <SelectContent>
-        {connectedStores.map((store) => (
-          <SelectItem key={store} value={store}>
-            {store}
-          </SelectItem>
-        ))}
-        {connectedStores.length === 0 && (
-          <div className="text-center text-sm text-muted-foreground px-2 py-3">
-            Belum ada toko yang terhubung
-          </div>
-        )}
+        <div className="space-y-1 px-2 py-2">
+          {ALL_MARKETPLACES.map((store) => (
+            <label key={store} className="flex items-center gap-2 cursor-pointer">
+              <Checkbox
+                checked={selected.includes(store)}
+                onCheckedChange={() => toggleMarketplace(store)}
+              />
+              <span className="text-sm">{store}</span>
+            </label>
+          ))}
+        </div>
+
         <div className="p-2 border-t mt-1">
-          <Button variant="outline" size="sm" className="w-full">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleConnect}
+            className="w-full"
+            disabled={selected.length === 0}
+          >
             Tautkan Marketplace
           </Button>
         </div>

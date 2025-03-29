@@ -1,27 +1,19 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
 
 import { useState } from "react"
 import Image from "next/image"
 import { Bell, Loader2, SlidersHorizontal, BadgeCent } from "lucide-react"
-import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from "@/components/ui/select"
 
 import { CustomSortSelect } from "../CustomSortSelect/CustomSortSelect"
 import { ConnectMarketplaceDialog } from "../ConnectMarketplaceDialog/ConnectMarketplaceDialog"
-import { MarketplaceFilterSelect } from "../MarketplaceFilterSelect/MarketplaceFilterSelect"
 import { ImportProductsModal } from "../ImportProductsModal/ImportProductsModal"
 import { ConnectedStoresSelector } from "../../components/ConnectedStoresSelector/ConnectedStoresSelector"
-import { useConnectedStores } from "../../store/useConnectedStores.ts"
+import { useConnectedStores } from "../../store/useConnectedStores"
 
 interface Product {
   id: number
@@ -52,9 +44,6 @@ export default function ProductsPage() {
   function handleConnect(name: string) {
     setIsConnected(true)
     connectStore(name) 
-    toast.success(`Berhasil menghubungkan akun ${name}`, {
-      description: `Anda dapat mulai menggunakan fitur ${name} sekarang.`,
-    })
   }
 
   return (
@@ -202,9 +191,17 @@ function EmptyStateNoProducts({
           0 produk
         </div>
 
-        <div className="text-4xl">📦</div>
+        <div className="text-4xl">
+          <Image
+            src="/images/catalog.png"
+            width={50}
+            height={40}
+            alt="Catalog Picture"
+            quality={100}
+          />
+        </div>
 
-        <p className="text-sm font-medium max-w-[250px]">
+        <p className="text-lg max-w-[250px] font-bold">
           Import data produk untuk pembuatan konten praktis
         </p>
 
