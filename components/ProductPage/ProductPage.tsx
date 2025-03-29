@@ -48,7 +48,7 @@ export default function ProductsPage() {
   return (
     <div className="px-4 pt-6 pb-20 space-y-4">
       <div className="flex items-center justify-between">
-        <button button className="p-2 rounded-md text-muted-foreground sm:hidden">
+        <button className="p-2 rounded-md text-muted-foreground sm:hidden">
           <svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect y="0" width="16" height="2" rx="1" fill="currentColor"/>
             <rect y="6" width="10" height="2" rx="1" fill="currentColor"/>
@@ -210,7 +210,7 @@ function ProductList({ products }: { products: Product[] }) {
             <p className="text-sm text-muted-foreground">{product.brand}</p>
             <div className="mt-1 text-xs flex items-center gap-1">
               <span className="inline-flex items-center gap-1">
-                <img
+                <Image
                   src={`/icons/${product.marketplace.toLowerCase()}.png`}
                   alt={product.marketplace}
                   className="h-4 w-4"

@@ -37,7 +37,7 @@ export function ConnectMarketplaceDialog({ onConnect, trigger }: Props) {
             <DialogTitle className="text-lg font-semibold">Tautkan Marketplace</DialogTitle>
           </DialogHeader>
           <DialogClose asChild>
-            <button aria-label="Close" className="text-muted-foreground hover:text-foreground">×</button>
+            <Button aria-label="Close" className="text-muted-foreground hover:text-foreground">×</Button>
           </DialogClose>
         </div>
         <div className="px-4 pb-4 space-y-3">
