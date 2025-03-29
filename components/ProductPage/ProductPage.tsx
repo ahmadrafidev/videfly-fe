@@ -8,10 +8,20 @@ import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select"
 
 import { CustomSortSelect } from "../CustomSortSelect/CustomSortSelect"
 import { ConnectMarketplaceDialog } from "../ConnectMarketplaceDialog/ConnectMarketplaceDialog"
 import { MarketplaceFilterSelect } from "../MarketplaceFilterSelect/MarketplaceFilterSelect"
+import { ImportProductsModal } from "../ImportProductsModal/ImportProductsModal"
+import { ConnectedStoresSelector } from "../../components/ConnectedStoresSelector/ConnectedStoresSelector"
+import { useConnectedStores } from "../../store/useConnectedStores.ts"
 
 interface Product {
   id: number
@@ -26,6 +36,7 @@ export default function ProductsPage() {
   const [loading, setLoading] = useState(false)
   const [sortValue, setSortValue] = useState("terbaru")
   const [marketplaceFilter, setMarketplaceFilter] = useState("tokopedia")
+  const { connectStore } = useConnectedStores()
 
   function handleImportProducts() {
     setLoading(true)
@@ -40,6 +51,7 @@ export default function ProductsPage() {
 
   function handleConnect(name: string) {
     setIsConnected(true)
+    connectStore(name) 
     toast.success(`Berhasil menghubungkan akun ${name}`, {
       description: `Anda dapat mulai menggunakan fitur ${name} sekarang.`,
     })
@@ -88,6 +100,13 @@ export default function ProductsPage() {
 
       <h1 className="text-2xl font-semibold">Produk</h1>
 
+      {isConnected && (
+        <div className="grid grid-cols-2 gap-2">
+          <ConnectedStoresSelector />
+          <Button className="bg-[#703BE7]" onClick={handleImportProducts}>Import Produk</Button>
+        </div>
+      )}
+
       <div className="space-y-3">
         <div className="relative">
           <Input
@@ -123,16 +142,8 @@ export default function ProductsPage() {
         </div>
       </div>
 
-      {isConnected && (
-        <div className="flex items-center gap-2">
-          <span className="bg-muted text-muted-foreground px-3 py-1 rounded-lg text-sm">
-            Toko Terhubung (1)
-          </span>
-          <Button onClick={handleImportProducts}>Import Produk</Button>
-        </div>
-      )}
-
       {!isConnected && <EmptyStateNoStore onConnect={handleConnect} />}
+
       {isConnected && !loading && products.length === 0 && (
         <EmptyStateNoProducts
           marketplaceFilter={marketplaceFilter}
@@ -140,7 +151,9 @@ export default function ProductsPage() {
           onImport={handleImportProducts}
         />
       )}
+
       {isConnected && loading && <LoadingState />}
+
       {isConnected && !loading && products.length > 0 && <ProductList products={products} />}
     </div>
   )
@@ -180,13 +193,37 @@ function EmptyStateNoProducts({
   marketplaceFilter: string
   onChangeMarketplace: (v: string) => void
 }) {
+  const [open, setOpen] = useState(false)
+
   return (
-    <div className="border rounded-lg px-4 py-6 text-center space-y-4">
-      <MarketplaceFilterSelect value={marketplaceFilter} onChange={onChangeMarketplace} />
-      <div className="text-4xl">📦</div>
-      <p className="text-sm font-medium">Import data produk untuk pembuatan konten praktis</p>
-      <Button onClick={onImport} variant="default">Import Data Produk</Button>
-    </div>
+    <>
+      <div className="relative border rounded-lg px-4 py-6 min-h-[60vh] flex flex-col items-center justify-center text-center space-y-4">
+        <div className="absolute top-2 left-4 text-xs bg-muted text-muted-foreground px-2 py-1 rounded-md">
+          0 produk
+        </div>
+
+        <div className="text-4xl">📦</div>
+
+        <p className="text-sm font-medium max-w-[250px]">
+          Import data produk untuk pembuatan konten praktis
+        </p>
+
+        <Button
+          onClick={() => setOpen(true)}
+          variant="default"
+          className="bg-[#703BE7]"
+        >
+          Impor Data Produk
+        </Button>
+      </div>
+
+      <ImportProductsModal
+        open={open}
+        onOpenChange={setOpen}
+        marketplace={marketplaceFilter}
+        onImportSuccess={onImport}
+      />
+    </>
   )
 }
 
@@ -211,9 +248,11 @@ function ProductList({ products }: { products: Product[] }) {
             <div className="mt-1 text-xs flex items-center gap-1">
               <span className="inline-flex items-center gap-1">
                 <Image
-                  src={`/icons/${product.marketplace.toLowerCase()}.png`}
+                  src={`/images/${product.marketplace.toLowerCase()}.png`}
                   alt={product.marketplace}
                   className="h-4 w-4"
+                  width={10}
+                  height={10}
                 />
                 {product.marketplace}
               </span>
