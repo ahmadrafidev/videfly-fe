@@ -2,11 +2,12 @@
 
 import { useState } from "react"
 import Image from "next/image"
-import { Loader2, SlidersHorizontal } from "lucide-react"
+import { Bell, Loader2, SlidersHorizontal, BadgeCent } from "lucide-react"
+import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Separator } from "@/components/ui/separator"
 
 import { CustomSortSelect } from "../CustomSortSelect/CustomSortSelect"
 import { ConnectMarketplaceDialog } from "../ConnectMarketplaceDialog/ConnectMarketplaceDialog"
@@ -26,10 +27,6 @@ export default function ProductsPage() {
   const [sortValue, setSortValue] = useState("terbaru")
   const [marketplaceFilter, setMarketplaceFilter] = useState("tokopedia")
 
-  function handleConnectStore() {
-    setIsConnected(true)
-  }
-
   function handleImportProducts() {
     setLoading(true)
     setTimeout(() => {
@@ -41,66 +38,157 @@ export default function ProductsPage() {
     }, 2000)
   }
 
+  function handleConnect(name: string) {
+    setIsConnected(true)
+    toast.success(`Berhasil menghubungkan akun ${name}`, {
+      description: `Anda dapat mulai menggunakan fitur ${name} sekarang.`,
+    })
+  }
+
   return (
     <div className="px-4 pt-6 pb-20 space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Produk</h1>
-        <div className="relative flex items-center space-x-2">
-          <div className="rounded-full bg-purple-100 text-purple-800 text-xs font-semibold px-3 py-1">5 Koin</div>
-          <Image src="/avatar.png" alt="User Avatar" width={32} height={32} className="rounded-full" />
+        <button button className="p-2 rounded-md text-muted-foreground sm:hidden">
+          <svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect y="0" width="16" height="2" rx="1" fill="currentColor"/>
+            <rect y="6" width="10" height="2" rx="1" fill="currentColor"/>
+            <rect y="12" width="16" height="2" rx="1" fill="currentColor"/>
+          </svg>
+        </button>
+
+        <div className="flex items-center gap-3">
+          {/* Notification Bell */}
+          <button className="relative">
+            <Bell className="w-5 h-5 text-muted-foreground" />
+            <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500 ring-2 ring-white" />
+          </button>
+
+          <div className="relative flex items-center pl-3 pr-1 py-1 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500">
+            <BadgeCent className="w-4 h-4 text-white mr-1" />
+            <span className="text-sm font-medium text-white mr-2">5 Koin</span>
+
+            <div className="relative w-6 h-6">
+              <Image
+                src="/images/tokopedia-icon.png"
+                alt="User Avatar"
+                fill
+                className="rounded-full border-2 border-white object-cover"
+              />
+              <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-white flex items-center justify-center">
+                <svg className="w-2 h-2 text-yellow-500" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 17.27L18.18 21 16.54 13.97 22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div className="flex flex-col sm:flex-row items-center gap-2">
-        {isConnected && (
-          <>
-            <span className="bg-muted text-muted-foreground px-3 py-1 rounded-lg text-sm">Toko Terhubung (1)</span>
-            <Button onClick={handleImportProducts}>Import Produk</Button>
-            <Input type="search" placeholder="Cari produk..." className="w-full sm:w-auto" />
-            <Button variant="outline" className="w-full sm:w-auto">
-              <SlidersHorizontal className="mr-2 h-4 w-4" /> Filter
-            </Button>
-          </>
-        )}
-        <CustomSortSelect value={sortValue} onChange={setSortValue} />
+      <Separator />
+
+      <h1 className="text-2xl font-semibold">Produk</h1>
+
+      <div className="space-y-3">
+        <div className="relative">
+          <Input
+            type="search"
+            placeholder="Cari produk..."
+            className="w-full pl-10 bg-muted text-muted-foreground rounded-xl"
+          />
+          <svg
+            className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
+          </svg>
+        </div>
+
+        <div className="grid grid-cols-2 gap-2">
+          <Button
+            variant="outline"
+            className="w-full rounded-full border-muted text-foreground font-medium"
+          >
+            <SlidersHorizontal className="mr-2 h-4 w-4" />
+            Filter
+          </Button>
+
+          <CustomSortSelect
+            value={sortValue}
+            onChange={setSortValue}
+            className="w-full text-foreground"
+          />
+        </div>
       </div>
 
+      {isConnected && (
+        <div className="flex items-center gap-2">
+          <span className="bg-muted text-muted-foreground px-3 py-1 rounded-lg text-sm">
+            Toko Terhubung (1)
+          </span>
+          <Button onClick={handleImportProducts}>Import Produk</Button>
+        </div>
+      )}
 
-      {!isConnected && <EmptyStateNoStore onConnect={() => setIsConnected(true)} />}
-      {isConnected && !loading && products.length === 0 && <EmptyStateNoProducts onImport={handleImportProducts} />}
+      {!isConnected && <EmptyStateNoStore onConnect={handleConnect} />}
+      {isConnected && !loading && products.length === 0 && (
+        <EmptyStateNoProducts
+          marketplaceFilter={marketplaceFilter}
+          onChangeMarketplace={setMarketplaceFilter}
+          onImport={handleImportProducts}
+        />
+      )}
       {isConnected && loading && <LoadingState />}
       {isConnected && !loading && products.length > 0 && <ProductList products={products} />}
     </div>
   )
 }
 
-function EmptyStateNoStore({ onConnect }: { onConnect: () => void }) {
+function EmptyStateNoStore({ onConnect }: { onConnect: (name: string) => void }) {
   return (
-    <div className="border rounded-lg px-4 py-6 text-center space-y-4">
-      <div className="flex justify-center gap-4">
-        <Image src="/images/blibli-icon.png" alt="Blibli" width={32} height={32} />
-        <Image src="/images/lazada-icon.png" alt="Lazada" width={32} height={32} />
-        <Image src="/images/shopee-icon.png" alt="Shopee" width={32} height={32} />
-        <Image src="/images/tiktokshop-icon.png" alt="TiktokShop" width={32} height={32} />
-        <Image src="/images/tokopedia-icon.png" alt="Tokopedia" width={32} height={32} />
+    <div className="relative border rounded-lg px-4 py-6 text-center space-y-4 min-h-[70vh] flex flex-col items-center justify-center">
+      <div className="absolute top-2 left-4 text-xs bg-muted text-muted-foreground px-2 py-1 rounded-md">
+        0 produk
       </div>
-      <p className="text-sm font-medium">Tampilkan katalog produk dari toko onlinemu secara otomatis</p>
-      <ConnectMarketplaceDialog onConnect={onConnect} />
+
+      <div className="flex justify-center gap-4">
+        {["blibli", "lazada", "shopee", "tiktokshop", "tokopedia"].map((m) => (
+          <Image key={m} src={`/images/${m}-icon.png`} alt={m} width={32} height={32} />
+        ))}
+      </div>
+
+      <p className="text-sm font-medium max-w-[250px]">
+        Tampilkan katalog produk dari toko onlinemu secara otomatis
+      </p>
+
+      <ConnectMarketplaceDialog
+        onConnect={onConnect}
+        trigger={<Button className="bg-[#703BE7]" variant="default">Tautkan Marketplace</Button>}
+      />
     </div>
   )
 }
 
-function EmptyStateNoProducts({ onImport }: { onImport: () => void }) {
+function EmptyStateNoProducts({
+  onImport,
+  marketplaceFilter,
+  onChangeMarketplace,
+}: {
+  onImport: () => void
+  marketplaceFilter: string
+  onChangeMarketplace: (v: string) => void
+}) {
   return (
     <div className="border rounded-lg px-4 py-6 text-center space-y-4">
-      <MarketplaceFilterSelect value={"tokopedia"} onChange={() => {}} />
+      <MarketplaceFilterSelect value={marketplaceFilter} onChange={onChangeMarketplace} />
       <div className="text-4xl">📦</div>
       <p className="text-sm font-medium">Import data produk untuk pembuatan konten praktis</p>
       <Button onClick={onImport} variant="default">Import Data Produk</Button>
     </div>
   )
 }
-
 
 function LoadingState() {
   return (
@@ -122,7 +210,11 @@ function ProductList({ products }: { products: Product[] }) {
             <p className="text-sm text-muted-foreground">{product.brand}</p>
             <div className="mt-1 text-xs flex items-center gap-1">
               <span className="inline-flex items-center gap-1">
-                <img src={`/icons/${product.marketplace.toLowerCase()}.png`} alt={product.marketplace} className="h-4 w-4" />
+                <img
+                  src={`/icons/${product.marketplace.toLowerCase()}.png`}
+                  alt={product.marketplace}
+                  className="h-4 w-4"
+                />
                 {product.marketplace}
               </span>
             </div>
