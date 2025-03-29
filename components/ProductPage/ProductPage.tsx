@@ -13,14 +13,11 @@ import { CustomSortSelect } from "../CustomSortSelect/CustomSortSelect"
 import { ConnectMarketplaceDialog } from "../ConnectMarketplaceDialog/ConnectMarketplaceDialog"
 import { ImportProductsModal } from "../ImportProductsModal/ImportProductsModal"
 import { ConnectedStoresSelector } from "../../components/ConnectedStoresSelector/ConnectedStoresSelector"
+import { ProductList } from '../ProductList/ProductList';
+
 import { useConnectedStores } from "../../store/useConnectedStores"
 
-interface Product {
-  id: number
-  name: string
-  brand: string
-  marketplace: string
-}
+import { Product } from "../../types/product"
 
 export default function ProductsPage() {
   const [isConnected, setIsConnected] = useState(false)
@@ -34,9 +31,22 @@ export default function ProductsPage() {
     setLoading(true)
     setTimeout(() => {
       setProducts([
-        { id: 1, name: "Bulgarian Rose & Body Serum", brand: "EARTH LOVE LIFE", marketplace: "Tokopedia" },
-        { id: 2, name: "UV Shield Sunscreen Gel SPF 30", brand: "Wardah", marketplace: "Tokopedia" },
+        {
+          id: 1,
+          name: "Bulgarian Rose & Body Serum",
+          brand: "EARTH LOVE LIFE",
+          marketplace: "Tokopedia",
+          image: "/images/product1.jpg",
+        },
+        {
+          id: 2,
+          name: "UV Shield Sunscreen Gel SPF 30",
+          brand: "Wardah",
+          marketplace: "Tokopedia",
+          image: "/images/product2.jpg",
+        },
       ])
+      
       setLoading(false)
     }, 2000)
   }
@@ -229,37 +239,6 @@ function LoadingState() {
     <div className="border rounded-lg px-4 py-6 text-center">
       <p className="mb-2 font-medium">Kami sedang mengambil data produk dari akun tokomu...</p>
       <Loader2 className="h-6 w-6 animate-spin mx-auto text-purple-500" />
-    </div>
-  )
-}
-
-function ProductList({ products }: { products: Product[] }) {
-  return (
-    <div className="space-y-4">
-      <p className="text-sm text-muted-foreground">{products.length} produk</p>
-      {products.map((product) => (
-        <div key={product.id} className="p-4 border rounded-md flex items-start justify-between">
-          <div>
-            <h3 className="font-semibold leading-snug">{product.name}</h3>
-            <p className="text-sm text-muted-foreground">{product.brand}</p>
-            <div className="mt-1 text-xs flex items-center gap-1">
-              <span className="inline-flex items-center gap-1">
-                <Image
-                  src={`/images/${product.marketplace.toLowerCase()}.png`}
-                  alt={product.marketplace}
-                  className="h-4 w-4"
-                  width={10}
-                  height={10}
-                />
-                {product.marketplace}
-              </span>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm">Buat Video</Button>
-          </div>
-        </div>
-      ))}
     </div>
   )
 }
