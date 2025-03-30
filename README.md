@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Videfly Product Showcase Page
 
-## Getting Started
+This is a **mobile-first, responsive product showcase page** built with [Next.js](https://nextjs.org), designed as part of the **Videfly Tech Quest 2025**. The page simulates an interface for managing AI-generated video ads based on product data from multiple marketplaces.
 
-First, run the development server:
+## ✨ Features
+
+- Mobile-first responsive layout
+- Connect to multiple marketplaces
+- Import simulated product data
+- Display connected stores
+- Show product info with marketplace badge
+- Action buttons: Generate Video, Edit, Delete
+- Clean and minimal UI 
+
+## 📦 Tech Stack
+
+- [Next.js 15 App Router](https://nextjs.org)
+- [Tailwind CSS](https://tailwindcss.com)
+- [shadcn/ui](https://ui.shadcn.com/)
+- Zustand (for state management)
+
+## 🛠️ Getting Started
+
+Install dependencies and run the dev server:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📁 Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `app/`: Main app router pages
+- `components/`: Reusable UI components
+- `store/`: State management
+- `types/`: TypeScript interfaces
+- `public/images/`: Marketplace icons & placeholders
 
-## Learn More
+## 📸 Demo Preview
 
-To learn more about Next.js, take a look at the following resources:
+Below is a preview of the product showcase page in action:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Product Home | Product Import | Product Listing |
+|:------------:|:--------------:| :--------------:|
+| ![Product Home](./public/images/home.jpeg){: width="300px"} | ![Product Import](./public/images/import.jpeg){: width="300px"} | ![Product Listing](./public/images/product-listing.jpeg){: width="300px"} |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+## 🚀 Deployment
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Deploy easily using [Vercel](https://vercel.com), the official platform for Next.js apps.

@@ -32,8 +32,8 @@ export function ConnectMarketplaceDialog({ onConnect, trigger }: Props) {
   const handleConnect = (name: string) => {
     if (!connectedStores.includes(name)) {
       connectStore(name)
-      toast.success(`Berhasil menghubungkan akun ${name}`, {
-        description: `Anda dapat mulai mengimpor produk dari ${name} sekarang.`,
+      toast.success(`Berhasil menghubungkan akun ${name}!`, {
+        description: ``,
       })
     }
     if (onConnect) onConnect(name)

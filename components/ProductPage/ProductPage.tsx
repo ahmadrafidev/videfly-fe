@@ -36,14 +36,14 @@ export default function ProductsPage() {
           name: "Bulgarian Rose & Body Serum",
           brand: "EARTH LOVE LIFE",
           marketplace: "Tokopedia",
-          image: "/images/product1.jpg",
+          image: "/images/dummy.png",
         },
         {
           id: 2,
           name: "UV Shield Sunscreen Gel SPF 30",
           brand: "Wardah",
           marketplace: "Tokopedia",
-          image: "/images/product2.jpg",
+          image: "/images/dummy.png",
         },
       ])
       

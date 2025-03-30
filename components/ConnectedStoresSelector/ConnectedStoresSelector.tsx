@@ -35,8 +35,8 @@ export function ConnectedStoresSelector() {
 
   const handleConnect = () => {
     selected.forEach(connectStore)
-    toast.success("Toko yang berhasil terhubung", {
-      description: selected.join(", "),
+    toast.success("Toko berhasil terhubung!", {
+      description: `Kami telah menghubungkan: ${selected.join(", ")}.`,
     })
   }
 
