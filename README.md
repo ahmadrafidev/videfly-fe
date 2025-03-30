@@ -44,7 +44,7 @@ Below is a preview of the product showcase page in action:
 
 | Product Home | Product Import | Product Listing |
 |:------------:|:--------------:| :--------------:|
-| ![Product Home](./public/images/home.jpeg){: width="300px"} | ![Product Import](./public/images/import.jpeg){: width="300px"} | ![Product Listing](./public/images/product-listing.jpeg){: width="300px"} |
+| ![Product Home](./public/images/home.jpeg) | ![Product Import](./public/images/import.jpeg)| ![Product Listing](./public/images/product-listing.jpeg) |
 
 
 ## 🚀 Deployment
